@@ -1,0 +1,30 @@
+body {margin:0;padding:0;text-align:center;font-size:10pt;font-family: Verdana, Arial, Helvetica, sans-serif;}
+
+/* css magic with screen size selectors? */
+
+p {margin: 0px;}
+#wrapper {width:800px;text-align:left;margin:50px auto;border:1px solid green;}
+#header {height:100px;background:grey;padding:10px;margin: 5px 5px 0 5px;}
+#body { }
+#left {float:left;width:400px;}
+#right {float:right;width:400px;}
+#footer {height:50px;background:grey;padding:10px;margin:5px;clear:both;}
+
+.block , .block-edit {margin:5px;padding:10px;background:grey;}
+.block-state-highlight {border:2px dashed grey;margin:5px;padding:10px;text-align:center;color:grey;}
+.sortable {padding:5px;background:#EEEEEE;margin:5px;border:2px dashed grey;}
+.controls {float:right;margin:0 0 4px 4px;}
+.add-new {text-align:center;}
+.loading {width:16px;height:16px;background-image:url(/images/ajax-loader.gif); }
+.emph { color: #C00000; }
+
+
+/* fix dialog size */
+.ui-dialog{font-size: 80%;}
+
+/* editor specific */
+.block-edit.text div.truncated { max-height:150px; overflow:hidden;}
+.block-edit.text span.continued { float:right; position:relative; top:-10px; right:-5px;}
+.mceEditor > table { /* location select so sizes can be explizit */
+    width:347px !important;
+}
