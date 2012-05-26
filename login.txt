@@ -1,0 +1,18 @@
+<form id="webLogin" action="user.php" method="post" name="webLogin"><input type="hidden" name="direct" value="true" /><input type="hidden" name="action" value="login" />
+<h3>Web Administration Login</h3>
+<table>
+<tbody>
+<tr>
+<td><label for="username">Username:</label></td>
+<td><input id="username" type="text" name="user" /></td>
+</tr>
+<tr>
+<td><label for="password">Password:</label></td>
+<td><input id="password" type="password" name="pass" /></td>
+</tr>
+<tr>
+<td colspan="2"><input type="submit" value="Login" /></td>
+</tr>
+</tbody>
+</table>
+</form>
