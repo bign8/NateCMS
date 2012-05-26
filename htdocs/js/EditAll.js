@@ -102,8 +102,9 @@ var Editer = {
 		$.ajax({
 			url:'/edit.php',
 			data:data,
-			success:function(json){ //to json
-				var obj = jQuery.parseJSON(json);
+			dataType:'json',
+			success:function(obj){ //to json
+				//var obj = jQuery.parseJSON(json);
 				if (obj.check != 'check') Editer.updateError();
 				$('#' + loc).append(obj.html).fadeIn('slow');
 				
@@ -137,7 +138,7 @@ var Editer = {
 	revert: function(that) {
 		var item = $(that).parent();
 		$('.add-new-text, .add-new-form', item).toggle();
-		$('.add-new-form-desc', item).html('Please select content type');
+		$('.add-new-form-desc', item).html('Content type');
 		$('[name="type_id"]', item).val('null');
 		$('input', that).show();
 		$('.loader', that).hide();

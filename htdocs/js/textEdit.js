@@ -26,6 +26,8 @@ var textEditObj = {
 		
 		$('.controls', sid).hide();
 		
+		var width = $(sid).width();
+		
 		$('.content', sid).tinymce({
 			script_url : '/js/tiny_mce/tiny_mce.js', // Location of TinyMCE script
 			
@@ -44,6 +46,7 @@ var textEditObj = {
 			theme : 'advanced',
 			plugins : 'save',
 			height : '200px', // handle width with css : location specific
+			width : width + 'px',
 
 			// Theme options
 			//*

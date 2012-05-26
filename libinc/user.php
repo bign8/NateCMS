@@ -23,6 +23,8 @@ class User {
 		$dbConn->runQuery("DELETE FROM `webAuthedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() )");
 		
 		$access = false;
+		if (!isset($_COOKIE['hash'])) return false;
+		
 		$cleanHash = $dbConn->clean( $_COOKIE['hash'] );
 		$perms = $dbConn->runQuery("SELECT * FROM `vWebPerms` WHERE `userHash` = '$cleanHash'");
 		
@@ -46,21 +48,18 @@ class User {
 	function checkLogged() {
 		$editing = ! (false === strpos(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_QUERY).'a', "mode=edit"));
 		
-		// check validation
-		if ( User::verify(false) ) {
+		// check validation and permissions
+		if ( User::verify($editing) ) {
 			User::refresh();
-			
-			 // check permission changes
-			if ($editing) return (User::verify()) ? '1' : '0' ;
-			
 			return '1';
 		}
+		
 		setcookie('hash', '', time() - 3600);
 		return '0';
 	}
 	
 	// login user (web form function)
-	function login($user, $pass, $direct){
+	function login($user, $pass, $direct, $ref=false){
 		$dbConn = new mysqlClass();
 		
 		$username = $dbConn->clean($user);
@@ -76,50 +75,51 @@ class User {
 			
 			// make sure hasn't already logged in! - unique field
 			$dbConn->runQuery("INSERT INTO `webAuthedUsers` (`userID`, `userHash` ) VALUES ('" . $row['userID'] . "', '$hash');");
-			$hasHash = mysql_fetch_array($dbConn->runQuery("SELECT `userHash` FROM `webAuthedUsers` WHERE authID = LAST_INSERT_ID() OR userID = '" . $row['userID'] . "'"));
+			$hasHash = mysql_fetch_assoc($dbConn->runQuery("SELECT `userHash` FROM `webAuthedUsers` WHERE authID = LAST_INSERT_ID() OR userID = '" . $row['userID'] . "'"));
 			
 			setcookie('hash', $hasHash['userHash']);
-			$d = array("msg" => self::LOGIN_SUCCESS);
+			$d = array("msg" => self::LOGIN_SUCCESS, "reload" => true);
 		} else {
-			$d = array("msg" => self::LOGIN_ERROR);
+			$d = array("msg" => self::LOGIN_ERROR, "reload" => false);
 		}
 		
-		if ($direct) return self::direct_handler($d);
+		if ($direct) return self::direct_handler($d, $ref);
 		return json_encode($d);
 	}
 	
-	// register user
+	// TODO: register user
 	function register($user, $pass, $email, $first, $last){
 		return "Who would want to register a snot nosed kid anyhow??";
 	}
 	
-	// check to see if username already exists
+	// TODO: check to see if username already exists
 	function check($user) {
 		return 'to hell if I know!';
 	}
 	
-	// recover user credentials
+	// TODO: recover user credentials
 	function forgot(){
 		return 'so did I';
 	}
 	
 	// logout a user (web form function)
-	function logout($direct){
+	function logout($direct, $ref=false){
 		$dbConn = new mysqlClass();
 		$dbConn->runQuery("DELETE FROM `webAuthedUsers` WHERE `userHash` = '" . $dbConn->clean($_COOKIE['hash']) . "' LIMIT 1");
 		setcookie('hash', '', time() - 3600);
 		$d = array("msg" => self::LOGOUT_SUCCESS);
-		if ($direct) return self::direct_handler($d);
+		if ($direct) return self::direct_handler($d, $ref);
 		return json_encode($d);
 	}
 	
 	// output for direct access to script, login forms on non-js browers, etc ... 
-	private function direct_handler($stateArr){
+	private function direct_handler($stateArr, $ref){
+		if (!$ref) $ref = $_SERVER['HTTP_REFERER'];
 		$returnHTML  = "<html><head>";
-		$returnHTML .= "<META HTTP-EQUIV=\"refresh\" CONTENT=\"4;URL=" . $_SERVER['HTTP_REFERER'] . "\">";
+		$returnHTML .= "<META HTTP-EQUIV=\"refresh\" CONTENT=\"4;URL=" . $ref . "\">";
 		$returnHTML .= "</head><body>";
 		$returnHTML .= $stateArr['msg'];
-		$returnHTML .= "<p><a href='" . $_SERVER['HTTP_REFERER'] . "'>If you are not redirected momentarily</a></p>";
+		$returnHTML .= "<p><a href='" . $ref . "'>If you are not redirected momentarily</a></p>";
 		$returnHTML .= "</body></html>";
 		return $returnHTML;
 	}
