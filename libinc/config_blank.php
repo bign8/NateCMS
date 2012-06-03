@@ -1,8 +1,16 @@
 <?php
 	class config {
 		const hostDir = __DIR__;
-		
 		const hashMAGIC = ''; // Random Private String for password encrypting process
+		
+		##################################################
+		# General Server Configuration                   #
+		##################################################
+		/*
+			This section is for general server configs that
+			will be used all over
+		*/
+		const AppName = 'Name of the Application for errors';
 	
 		##################################################
 		# Email Configuration                            #
