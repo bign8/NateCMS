@@ -14,7 +14,6 @@
   <script src="/js/jquery.cookie.js"></script>
   <script src="/js/jquery-ui-1.8.16.custom.min.js" ></script>
   <script src="/js/all.js" ></script>
-  {*
   <link rel="stylesheet" type="text/css" href="/dynamic/blank/css.css" id="toSwitch" />
   <script>
 	{literal}
@@ -47,7 +46,6 @@
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(wf, s);
   })(); </script>
-  *}
   {if $smarty.get.mode == 'edit'}
 	<script src="/js/EditAll.js" ></script>
   {/if}
