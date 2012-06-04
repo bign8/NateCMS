@@ -24,8 +24,6 @@
 			//$this->php_handling = SMARTY_PHP_PASSTHRU;
 			//$this->PHP_PASSTHRU = true;
 			//$this->debugging = true;
-			
-
 		}
 	}
 ?>
