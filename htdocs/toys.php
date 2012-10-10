@@ -11,7 +11,7 @@ if (!$fp) {
     fclose($fp);
 }
 //*/
-echo print_r($_SERVER, true);
+//echo print_r($_SERVER, true);
 ?>
 
 
