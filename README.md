@@ -11,4 +11,4 @@ Please note the configuration of your webserver
 * Server root should be pointed to public_html
 * Server specific configuration is contained within the /libinc dir
 
-[bign8](http://a.h1x.com)
+[bign8](http://nathanjwoods.com)

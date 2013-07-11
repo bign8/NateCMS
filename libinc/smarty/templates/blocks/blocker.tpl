@@ -13,7 +13,7 @@
 					<option value="{$foo.blockID}" title="{$foo.description}">{$foo.name}</option>
 				{/foreach}
 			</select>&nbsp;
-			<span class="add-new-form-desc">Please select content type</span>
+			<span class="add-new-form-desc">Content type</span>
 			<br/>
 			<input type="submit" value="Add Content" />
 			<input type="reset" value="Cancel" />

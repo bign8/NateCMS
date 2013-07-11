@@ -15,7 +15,7 @@
 			$this->cache_dir = config::hostDir . '/smarty/cache/';
 			
 			$this->caching = false;
-			$this->assign('app_name', 'Outside Media');
+			$this->assign('app_name', config::AppName);
 			
 			//$this->testInstall();
 			
@@ -24,8 +24,6 @@
 			//$this->php_handling = SMARTY_PHP_PASSTHRU;
 			//$this->PHP_PASSTHRU = true;
 			//$this->debugging = true;
-			
-
 		}
 	}
 ?>

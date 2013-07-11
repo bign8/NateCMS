@@ -45,6 +45,9 @@
 		}
 		
 		private function getPage($url) {
+			$edit = (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit');
+			
+			
 			$q = "SELECT * FROM `vWebPages` WHERE `path`='" . $url . "'";
 			$pageQuery = self::$dbConn->runQuery($q);
 			
@@ -63,10 +66,10 @@
 				self::$isEditer = User::verify();
 				
 				// Edit specefic processing
-				if ( $_REQUEST['mode'] == 'edit' ) {
+				if ( $edit ) {
 					
 					// Check credentials!
-					if (!self::$isEditer) die("<script>alert('You are not authorized to edit this web page.\\nIf you feel this is an error, please contact the Webmaster.');window.location.href = \"{$_SERVER['SCRIPT_URI']}\";</script>");
+					if (!self::$isEditer) die("<script>alert('You are not authorized to edit this web page.\\nIf you feel this is an error, please contact the Webmaster.');window.location.href = \"{$_SERVER['REDIRECT_URL']}\";</script>");
 					
 					// add block names for edit mode
 					$q = "SELECT blockID, name, description FROM `webBlock`";
@@ -81,7 +84,7 @@
 				}
 				
 				// load dynamic includes
-				$q = "SELECT * FROM `vWebScripts` WHERE `edit` = ".((int)($_REQUEST['mode'] == 'edit'))." AND `blockID` IN (SELECT distinct(blockID) FROM webContent WHERE vfsID = ".$rec['vfsID'].")";
+				$q = "SELECT * FROM `vWebScripts` WHERE `edit` = ".((int)$edit)." AND `blockID` IN (SELECT distinct(blockID) FROM webContent WHERE vfsID = ".$rec['vfsID'].")";
 				self::$dynInclude = self::$dbConn->fetchAllAssoc($q);
 				
 			} else {

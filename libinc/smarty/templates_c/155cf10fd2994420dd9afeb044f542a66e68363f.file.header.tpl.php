@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty 3.1.4, created on 2011-12-04 21:02:57
+<?php /* Smarty version Smarty 3.1.4, created on 2012-02-24 00:46:26
          compiled from "/hermes/web05/b2386/moo.outsidemediacom/omnate/libinc/smarty/templates/start/header.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:9872207234ec16fcf1355a8-63372484%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '155cf10fd2994420dd9afeb044f542a66e68363f' => 
     array (
       0 => '/hermes/web05/b2386/moo.outsidemediacom/omnate/libinc/smarty/templates/start/header.tpl',
-      1 => 1323050576,
+      1 => 1330062285,
       2 => 'file',
     ),
   ),
@@ -52,6 +52,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <body>
 	<div id="wrapper">
 		<div id="header">
-			Name of the Site and Other Header info
+			<h1>OutsideMedia - Nate Test</h1>
+			<span style="text-align:center;"><a href="/">HOME</a></span>
 		</div>
 		<div id="body"><?php }} ?>

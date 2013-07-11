@@ -1,18 +1,79 @@
-body {margin:0;padding:0;text-align:center;font-size:10pt;font-family: Verdana, Arial, Helvetica, sans-serif;}
+body {
+	margin:0;
+	padding:0;
+	text-align:center;
+	font-size:10pt;
+	background-color:#eee;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
 
 /* css magic with screen size selectors? */
 
-p {margin: 0px;}
-#wrapper {width:800px;text-align:left;margin:50px auto;border:1px solid green;}
-#header {height:100px;background:grey;padding:10px;margin: 5px 5px 0 5px;}
-#body { }
-#left {float:left;width:400px;}
-#right {float:right;width:400px;}
-#footer {height:50px;background:grey;padding:10px;margin:5px;clear:both;}
+p {
+	margin: 0px;
+}
+#wrapper, #styleNav {
+	width:800px;
+	text-align:left;
+	margin:50px auto;
+	border:1px solid gray;
+	background-color:white;
+	border-radius:15px;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	box-shadow:0 0 40px gray;
+}
+#header {
+	height:100px;
+	background:grey;
+	padding:10px;
+	margin: 5px 5px 0 5px;
+	text-align: center;
+	border-radius:10px 10px 0 0;
+	-moz-border-radius:10px 10px 0 0;
+	-webkit-border-radius:10px 10px 0 0;
+}
+#styleNav ul {
+	padding:10px;
+	margin: 5px;
+	height: 15px;
+	background:grey;
+	border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+}
+#styleNav ul li {
+	list-style: none;
+	float: left;
+	padding-right: 10px;
+}
+#body {
+	
+}
+#left {
+	float:left;
+	width: 300px;
+}
+#right {
+	float:right;
+	width: 500px;
+}
+#footer	{
+	height:50px;
+	background:grey;
+	padding:10px;
+	margin:5px;
+	clear:both;
+	border-radius:0 0 10px 10px;
+	-moz-border-radius:0 0 10px 10px;
+	-webkit-border-radius:0 0 10px 10px;
+}
 
-.block , .block-edit {margin:5px;padding:10px;background:grey;}
+#right .block , #right .block-edit {margin:5px;padding:10px;background:grey;}
+#left .block , #left .block-edit {margin:5px 0 5px 5px;padding:10px;background:grey;}
+#left .block-edit {margin-right: 5px;} /* editer fix*/ 
 .block-state-highlight {border:2px dashed grey;margin:5px;padding:10px;text-align:center;color:grey;}
-.sortable {padding:5px;background:#EEEEEE;margin:5px;border:2px dashed grey;}
+.sortable {background:#EEEEEE;margin:5px;border:2px dashed grey;}
 .controls {float:right;margin:0 0 4px 4px;}
 .add-new {text-align:center;}
 .loading {width:16px;height:16px;background-image:url(/images/ajax-loader.gif); }
@@ -25,6 +86,12 @@ p {margin: 0px;}
 /* editor specific */
 .block-edit.text div.truncated { max-height:150px; overflow:hidden;}
 .block-edit.text span.continued { float:right; position:relative; top:-10px; right:-5px;}
-.mceEditor > table { /* location select so sizes can be explizit */
-    width:347px !important;
+
+ /* location select so sizes can be explizit */
+/*
+#left .mceEditor > table {
+    width:247px !important;
 }
+#right .mceEditor > table {
+    width:447px !important;
+}*/

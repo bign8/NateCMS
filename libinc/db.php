@@ -4,8 +4,6 @@
 	class mysqlClass{
 		private static $db;
 		
-		// fetch assoc
-		
 		function __construct(){
 			self::dbConnect();
 		}
@@ -30,7 +28,7 @@
 		
 		// fetch a single element in variable form from db
 		public function fetchAssoc($query, $entry = NULL) {
-			$result = mysql_fetch_array(self::runQuery($query));
+			$result = mysql_fetch_assoc(self::runQuery($query));
 			$result = (is_null($entry))?$result:$result[$entry];
 			return $result;
 		}
@@ -54,7 +52,7 @@
 		
 		private function error_handle($msg) {
 			// mail stuff here
-			die ('db - error!');
+			die (mysql_errno(self::$db) . ' db - error! ' . $msg); // 1062
 		}
 	}
 ?>
