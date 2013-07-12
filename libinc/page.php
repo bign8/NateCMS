@@ -47,6 +47,7 @@
 		private function getPage($url) {
 			$edit = (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit');
 			
+			$url = self::$dbConn->clean($url);
 			
 			$q = "SELECT * FROM `vWebPages` WHERE `path`='" . $url . "'";
 			$pageQuery = self::$dbConn->runQuery($q);
