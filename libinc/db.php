@@ -21,7 +21,7 @@
 		public function runQuery($query) { 
 			$result = mysql_query($query, self::$db);
 			
-			if (mysql_error(self::$db) != '') self::error_handle("Error in query!"/*: ".$query*/);
+			if (mysql_error(self::$db) != '') self::error_handle("Error in query!: ".$query);
 			
 			return $result;
 		}

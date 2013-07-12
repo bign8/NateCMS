@@ -1,0 +1,16 @@
+Completed Modifications:
+(check-ish) Rename tables to have underscores after web (ie: web_block, web_vfs, web_template)
+(check) Change webScripts edit to an enum('yes', 'no') type
+(check) Rename webContent location column to locID
+(check) Implement load order in page.php near "get dynamic includes"
+
+Proposed Modificaitons:
+Not all database calls have been handled
+Implement dbError page (sent error emails, aditional config)
+
+Database View Queries:
+web_v_page: SELECT `web_vfs`.*, `web_template`.`name`, `web_template`.`body`, `web_template`.`header`, `web_template`.`footer` FROM `web_vfs`JOIN `web_template` ON `web_vfs`.`templateID` = `web_template`.`templateID`
+
+web_v_content: SELECT c.*, b.name, b.description, b.renderer, b.editer, b.initContent, b.editObject, l.locName FROM `web_content` c JOIN `web_block` b ON c.blockID = b.blockID JOIN `web_locations` l WHERE c.locID = l.locID
+
+web_v_scripts: SELECT m.*, s.script, s.type, s.edit FROM `web_blockScrMap`m JOIN `web_scripts` s ON s.scriptID = m.scriptID

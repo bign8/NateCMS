@@ -49,7 +49,7 @@
 			
 			$url = self::$dbConn->clean($url);
 			
-			$q = "SELECT * FROM `vWebPages` WHERE `path`='" . $url . "'";
+			$q = "SELECT * FROM `web_v_page` WHERE `path`='" . $url . "'";
 			$pageQuery = self::$dbConn->runQuery($q);
 			
 			if ( mysql_num_rows($pageQuery) != 0 ) {
@@ -78,14 +78,14 @@
 				}
 				
 				// get page content
-				$q = "SELECT * FROM `vWebCon` WHERE `vfsID`='" . $rec['vfsID'] . "'";// ORDER BY `orders` ASC"; // done by view
+				$q = "SELECT * FROM `web_v_content` WHERE `vfsID`='" . $rec['vfsID'] . "'";// ORDER BY `orders` ASC"; // done by view
 				$contentQuery = self::$dbConn->runQuery($q);
 				while ($row = mysql_fetch_assoc($contentQuery)) {
 					self::$content[$row['locName']][] = $row; // special encoding, no fetchAllAssoc possible
 				}
 				
 				// load dynamic includes
-				$q = "SELECT * FROM `vWebScripts` WHERE `edit` = ".((int)$edit)." AND `blockID` IN (SELECT distinct(blockID) FROM webContent WHERE vfsID = ".$rec['vfsID'].")";
+				$q = "SELECT * FROM `web_v_scripts` WHERE `edit` = '".($edit?'yes':'no')."' AND `blockID` IN (SELECT distinct(blockID) FROM web_content WHERE vfsID = ".$rec['vfsID'].") ORDER BY `loadOrder` ASC;"; // optimize this query
 				self::$dynInclude = self::$dbConn->fetchAllAssoc($q);
 				
 			} else {

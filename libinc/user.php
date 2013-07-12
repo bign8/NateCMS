@@ -20,7 +20,7 @@ class User {
 		$dbConn = new mysqlClass();
 		
 		// allow age-ing of hashes ( one minute after all instances closed lose privlages )
-		$dbConn->runQuery("DELETE FROM `webAuthedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() )");
+		$dbConn->runQuery("DELETE FROM `web_authedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() )"); // TODO: Update using interval command
 		
 		$access = false;
 		if (!isset($_COOKIE['hash'])) return false;
@@ -105,7 +105,7 @@ class User {
 	// logout a user (web form function)
 	function logout($direct, $ref=false){
 		$dbConn = new mysqlClass();
-		$dbConn->runQuery("DELETE FROM `webAuthedUsers` WHERE `userHash` = '" . $dbConn->clean($_COOKIE['hash']) . "' LIMIT 1");
+		$dbConn->runQuery("DELETE FROM `web_authedUsers` WHERE `userHash` = '" . $dbConn->clean($_COOKIE['hash']) . "' LIMIT 1");
 		setcookie('hash', '', time() - 3600);
 		$d = array("msg" => self::LOGOUT_SUCCESS);
 		if ($direct) return self::direct_handler($d, $ref);
