@@ -1,4 +1,5 @@
 <?php
+
 require_once("site_inc.php");
 
 class User {

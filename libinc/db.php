@@ -54,3 +54,16 @@ class mysqlClass{
 		die (mysql_errno(self::$db) . ' db - error! ' . $msg); // 1062
 	}
 }
+
+class dbConnect {
+	public static function connect() {
+		try {
+			$dbh = new PDO( config::db_dsn, config::db_user, config::db_pass, config::db_opt );
+			return $dbh;
+		} catch (PDOException $e) {
+			if( $_SERVER['REQUEST_URI'] != '/db404' ) { // to be implemented
+				die($e->getMessage());
+			}
+		}
+	}
+}

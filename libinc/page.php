@@ -1,7 +1,7 @@
 <?php
 
 class PageClass {
-	public static $pagevals		= array();
+	public static $pageVals		= array();
 	public static $content		= array();
 	public static $dynInclude	= array();
 	public static $blocks		= array();
