@@ -21,4 +21,3 @@ switch ($_REQUEST['action']) {
 	default:
 		echo "Your Kung-Fu is not strong!";
 }
-?>

@@ -7,6 +7,8 @@ Completed Modifications:
 Proposed Modificaitons:
 Not all database calls have been handled
 Implement dbError page (sent error emails, aditional config)
+Rewrite so db is all sqlite - see: http://www.switchonthecode.com/tutorials/php-tutorial-creating-and-modifying-sqlite-databases
+Admin note - when new directory is created, automatically generate index file for new directory
 
 Database View Queries:
 web_v_page: SELECT `web_vfs`.*, `web_template`.`name`, `web_template`.`body`, `web_template`.`header`, `web_template`.`footer` FROM `web_vfs`JOIN `web_template` ON `web_vfs`.`templateID` = `web_template`.`templateID`
@@ -14,3 +16,5 @@ web_v_page: SELECT `web_vfs`.*, `web_template`.`name`, `web_template`.`body`, `w
 web_v_content: SELECT c.*, b.name, b.description, b.renderer, b.editer, b.initContent, b.editObject, l.locName FROM `web_content` c JOIN `web_block` b ON c.blockID = b.blockID JOIN `web_locations` l WHERE c.locID = l.locID
 
 web_v_scripts: SELECT m.*, s.script, s.type, s.edit FROM `web_blockScrMap`m JOIN `web_scripts` s ON s.scriptID = m.scriptID
+
+web_v_perms: SELECT `web_permMap`.*, `web_authedUsers`.authID, `web_permissions`.permName, `web_permissions`.permPath, `web_authedUsers`.userHash FROM `web_permMap` JOIN `web_permissions` ON `web_permMap`.permID = `web_permissions`.permID JOIN `web_authedUsers` ON `web_permMap`.userID = `web_authedUsers`.userID

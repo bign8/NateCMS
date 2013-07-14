@@ -119,4 +119,3 @@ END;
 		echo "Your kung-fu is no good here";
 		break;
 }
-?>

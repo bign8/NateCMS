@@ -2,13 +2,13 @@
 require_once("site_inc.php");
 
 class User {
-	const LOGIN_SUCCESS = "<h1 class='yay'>Success</h1><p>You will be redirected in 4 seconds.</p>",
-		  LOGIN_SCREEN = "<h1 class='err'>Error</h1><p>Sorry, your account has not been authenticated by the control user.  Please try again later.</p>",
-		  LOGIN_ERROR = "<h1 class='err'>Error</h1><p>Sorry, your account could not be found. Please try again.</p>",
-		  REGISTER_SUCCESS = "<h1 class='yay'>Success</h1><p>Your account was successfully created. Please wait for an e-mail from the Control User.</p>",
-		  REGISTER_DUPLICATE = "<h1 class='err'>Error</h1><p>Sorry, that username is taken. Please go back and try again.</p>",
-		  REGISTER_ERROR = "<h1 class='err'>Error</h1><p>Sorry, your registration failed. Please go back and try again.</p>",
-		  LOGOUT_SUCCESS = "<h1 class='yay'>Success</h1><p>You have been successfully logged out!</p>";
+	const LOGIN_SUCCESS			= "<h1 class='yay'>Success</h1><p>You will be redirected in 4 seconds.</p>",
+		  LOGIN_SCREEN			= "<h1 class='err'>Error</h1><p>Sorry, your account has not been authenticated by the control user.  Please try again later.</p>",
+		  LOGIN_ERROR			= "<h1 class='err'>Error</h1><p>Sorry, your account could not be found. Please try again.</p>",
+		  REGISTER_SUCCESS		= "<h1 class='yay'>Success</h1><p>Your account was successfully created. Please wait for an e-mail from the Control User.</p>",
+		  REGISTER_DUPLICATE	= "<h1 class='err'>Error</h1><p>Sorry, that username is taken. Please go back and try again.</p>",
+		  REGISTER_ERROR		= "<h1 class='err'>Error</h1><p>Sorry, your registration failed. Please go back and try again.</p>",
+		  LOGOUT_SUCCESS		= "<h1 class='yay'>Success</h1><p>You have been successfully logged out!</p>";
 	
 	public function User() {
 		// verify and get permissions - admin?
@@ -20,13 +20,13 @@ class User {
 		$dbConn = new mysqlClass();
 		
 		// allow age-ing of hashes ( one minute after all instances closed lose privlages )
-		$dbConn->runQuery("DELETE FROM `web_authedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() )"); // TODO: Update using interval command
+		$dbConn->runQuery("DELETE FROM `web_authedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() )");
 		
 		$access = false;
 		if (!isset($_COOKIE['hash'])) return false;
 		
 		$cleanHash = $dbConn->clean( $_COOKIE['hash'] );
-		$perms = $dbConn->runQuery("SELECT * FROM `vWebPerms` WHERE `userHash` = '$cleanHash'");
+		$perms = $dbConn->runQuery("SELECT * FROM `web_v_perms` WHERE `userHash` = '$cleanHash'");
 		
 		while (!$access && $accRow = mysql_fetch_assoc($perms)) {
 			if( strpos($_SERVER['REQUEST_URI'], $accRow['permPath']) === 0 || !$edit) $access = true;
@@ -41,7 +41,7 @@ class User {
 	
 		$dbConn = new mysqlClass();
 		$cleanHash = $dbConn->clean( $_COOKIE['hash'] );
-		$dbConn->runQuery("UPDATE `webAuthedUsers` SET `created` = NOW( ) WHERE `userHash` = '$cleanHash' LIMIT 1 ;");
+		$dbConn->runQuery("UPDATE `web_authedUsers` SET `created` = NOW( ) WHERE `userHash` = '$cleanHash' LIMIT 1 ;");
 	}
 	
 	// webfunction to logout of all instances! checks if db changes (authenticon and permissions)
@@ -65,7 +65,7 @@ class User {
 		$username = $dbConn->clean($user);
 		$password = $dbConn->clean($pass);
 		
-		$checklogin = $dbConn->runQuery("SELECT `userID` FROM `webUsers` WHERE `userName` = '$username' AND `password` = sha1('$password')");
+		$checklogin = $dbConn->runQuery("SELECT `userID` FROM `web_users` WHERE `userName` = '$username' AND `password` = sha1('$password')");
 
 		if(mysql_num_rows($checklogin) == 1) {
 			$row = mysql_fetch_array($checklogin);
@@ -74,8 +74,8 @@ class User {
 			$hash = base64_encode(sha1($password . sha1($row['userID'] . rand())) . sha1($row['userID'] . rand()) . config::hashMAGIC);
 			
 			// make sure hasn't already logged in! - unique field
-			$dbConn->runQuery("INSERT INTO `webAuthedUsers` (`userID`, `userHash` ) VALUES ('" . $row['userID'] . "', '$hash');");
-			$hasHash = mysql_fetch_assoc($dbConn->runQuery("SELECT `userHash` FROM `webAuthedUsers` WHERE authID = LAST_INSERT_ID() OR userID = '" . $row['userID'] . "'"));
+			$dbConn->runQuery("INSERT INTO `web_authedUsers` (`userID`, `userHash` ) VALUES ('" . $row['userID'] . "', '$hash');");
+			$hasHash = mysql_fetch_assoc($dbConn->runQuery("SELECT `userHash` FROM `web_authedUsers` WHERE authID = LAST_INSERT_ID() OR userID = '" . $row['userID'] . "'"));
 			
 			setcookie('hash', $hasHash['userHash']);
 			$d = array("msg" => self::LOGIN_SUCCESS, "reload" => true);
@@ -124,5 +124,3 @@ class User {
 		return $returnHTML;
 	}
 }
-
-?>
