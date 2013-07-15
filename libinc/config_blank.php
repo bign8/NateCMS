@@ -2,7 +2,7 @@
 
 class config {
 	const hostDir   = __DIR__;
-	const hashMAGIC = ''; // Random Private String for password encrypting process
+	const hashSALT = ''; // Random Private String for password encrypting process
 	
 	##################################################
 	# General Server Configuration                   #

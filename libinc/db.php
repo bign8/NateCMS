@@ -55,6 +55,7 @@ class mysqlClass{
 	}
 }
 
+// possible rename to myPDO
 class dbConnect extends PDO {
 	public function __construct() {
 		try {
@@ -65,4 +66,16 @@ class dbConnect extends PDO {
 			}
 		}
 	}
+	/*
+	// another way to handle query errors
+	public function query($params) { // may need more parameters
+		return parent::query($params);
+		// handle error
+	}
+
+	public function execute( $params ) { // may need more parameters
+		parent::execute( $params );
+		// handle error
+	}
+	//*/
 }

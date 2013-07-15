@@ -1,7 +1,9 @@
 {if isset($smarty.get.mode) && $smarty.get.mode == 'edit'}
 	<div id="{$id}" class="sortable">
-		{foreach from=$content[$id] item=foo}{include file=$foo['editer'] item=$foo}
-		{/foreach}
+		{if isset($content[$id])}
+			{foreach from=$content[$id] item=foo}{include file=$foo['editer'] item=$foo}
+			{/foreach}
+		{/if}
 	</div>
 	{* Add new content form *}
 	<div class="block add-new" onClick="Editer.displayAddForm(this)">

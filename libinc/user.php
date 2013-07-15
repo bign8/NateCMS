@@ -18,19 +18,20 @@ class User {
 	
 	// verify that user is still logged in and has permissions
 	public static function verify($edit = true) { // more like isEdit
-		$dbh = new mysqlClass();
+		$DBH = new dbConnect();
 		
 		// allow age-ing of hashes ( one minute after all instances closed lose privlages )
-		$dbh->runQuery("DELETE FROM `web_authedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() )");
+		$DBH->query("DELETE FROM `web_authedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() );");
 		
 		$access = false;
-		if (!isset($_COOKIE['hash'])) return false;
+		if (isset($_COOKIE['hash'])) {
 		
-		$cleanHash = $dbh->clean( $_COOKIE['hash'] );
-		$perms = $dbh->runQuery("SELECT * FROM `web_v_perms` WHERE `userHash` = '$cleanHash'");
-		
-		while (!$access && $accRow = mysql_fetch_assoc($perms)) {
-			if( strpos($_SERVER['REQUEST_URI'], $accRow['permPath']) === 0 || !$edit) $access = true;
+			$STH = $DBH->prepare("SELECT * FROM `web_v_perms` WHERE `userHash` = ? ;");
+			$STH->execute( array($_COOKIE['hash']) );
+
+			while (!$access && $accRow = $STH->fetch( PDO::FETCH_ASSOC )) {
+				if( strpos($_SERVER['REQUEST_URI'], $accRow['permPath']) === 0 || !$edit) $access = true;
+			}
 		}
 		
 		return $access;
@@ -40,14 +41,14 @@ class User {
 	public static function refresh() {
 		if (!isset($_COOKIE['hash'])) return;
 	
-		$dbh = new mysqlClass();
-		$cleanHash = $dbh->clean( $_COOKIE['hash'] );
-		$dbh->runQuery("UPDATE `web_authedUsers` SET `created` = NOW( ) WHERE `userHash` = '$cleanHash' LIMIT 1 ;");
+		$DBH = new dbConnect();
+		$STH = $DBH->prepare("UPDATE `web_authedUsers` SET `created` = NOW( ) WHERE `userHash` = ? LIMIT 1 ;");
+		$STH->execute( array($_COOKIE['hash']) );
 	}
 	
 	// webfunction to logout of all instances! checks if db changes (authenticon and permissions)
 	function checkLogged() {
-		$editing = ! (false === strpos(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_QUERY).'a', "mode=edit"));
+		$editing = ! (false === strpos(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_QUERY).'a', "mode=edit")); // WHAT? is there a better way to do this?
 		
 		// check validation and permissions
 		if ( User::verify($editing) ) {
@@ -61,22 +62,24 @@ class User {
 	
 	// login user (web form function)
 	function login($user, $pass, $direct, $ref=false){
-		$dbh = new mysqlClass();
-		
-		$username = $dbh->clean($user);
-		$password = $dbh->clean($pass);
-		
-		$checklogin = $dbh->runQuery("SELECT `userID` FROM `web_users` WHERE `userName` = '$username' AND `password` = sha1('$password')");
+		$DBH = new dbConnect();
 
-		if(mysql_num_rows($checklogin) == 1) {
-			$row = mysql_fetch_array($checklogin);
+		$loginSTH = $DBH->prepare("SELECT `userID` FROM `web_users` WHERE `userName` = ? AND `password` = sha1( ? );");
+		$loginSTH->execute( array($user, $pass) );
+
+		if($loginSTH->rowCount() == 1) {
+			$row = $loginSTH->fetch( PDO::FETCH_ASSOC );
 			
 			// http://php.net/manual/en/function.sha1.php - derived from first comment
-			$hash = base64_encode(sha1($password . sha1($row['userID'] . rand())) . sha1($row['userID'] . rand()) . config::hashMAGIC);
+			$hash = base64_encode(sha1($pass . sha1($row['userID'] . rand())) . sha1($row['userID'] . rand()) . config::hashSALT); // is there a better way?
 			
 			// make sure hasn't already logged in! - unique field
-			$dbh->runQuery("INSERT INTO `web_authedUsers` (`userID`, `userHash` ) VALUES ('" . $row['userID'] . "', '$hash');");
-			$hasHash = mysql_fetch_assoc($dbh->runQuery("SELECT `userHash` FROM `web_authedUsers` WHERE authID = LAST_INSERT_ID() OR userID = '" . $row['userID'] . "'"));
+			$insertSTH = $DBH->prepare("INSERT INTO `web_authedUsers` (`userID`, `userHash` ) VALUES ( ?, ? );"); // find a way to skip errors here so next step can fire
+			$insertSTH->execute( array( $row['userID'], $hash ) );
+
+			$authSTH = $DBH->prepare("SELECT `userHash` FROM `web_authedUsers` WHERE authID = LAST_INSERT_ID() OR userID = ? ;");
+			$authSTH->execute( array( $row['userID'] ) );
+			$hasHash = $authSTH->fetch( PDO::FETCH_ASSOC );
 			
 			setcookie('hash', $hasHash['userHash']);
 			$d = array("msg" => self::LOGIN_SUCCESS, "reload" => true);
@@ -105,8 +108,10 @@ class User {
 	
 	// logout a user (web form function)
 	function logout($direct, $ref=false){
-		$dbh = new mysqlClass();
-		$dbh->runQuery("DELETE FROM `web_authedUsers` WHERE `userHash` = '" . $dbh->clean($_COOKIE['hash']) . "' LIMIT 1");
+		$DBH = new dbConnect();
+		$STH = $DBH->prepare("DELETE FROM `web_authedUsers` WHERE `userHash` = ? ;");
+		$STH->execute( array( $_COOKIE['hash'] ) );
+		
 		setcookie('hash', '', time() - 3600);
 		$d = array("msg" => self::LOGOUT_SUCCESS);
 		if ($direct) return self::direct_handler($d, $ref);
