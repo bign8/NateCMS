@@ -1,4 +1,4 @@
-{if $smarty.get.mode == 'edit'}
+{if isset($smarty.get.mode) && $smarty.get.mode == 'edit'}
 	<div id="{$id}" class="sortable">
 		{foreach from=$content[$id] item=foo}{include file=$foo['editer'] item=$foo}
 		{/foreach}

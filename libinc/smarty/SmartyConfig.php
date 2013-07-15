@@ -9,10 +9,10 @@
 			parent::__construct();
 			
 			// from web root
-			$this->template_dir = config::hostDir . '/smarty/templates/';
-			$this->compile_dir = config::hostDir . '/smarty/templates_c/';
-			$this->config_dir = config::hostDir . '/smarty/config/';
-			$this->cache_dir = config::hostDir . '/smarty/cache/';
+			$this->template_dir	= config::hostDir . '/smarty/templates/';
+			$this->compile_dir	= config::hostDir . '/smarty/templates_c/';
+			$this->config_dir	= config::hostDir . '/smarty/config/';
+			$this->cache_dir	= config::hostDir . '/smarty/cache/';
 			
 			$this->caching = false;
 			$this->assign('app_name', config::AppName);

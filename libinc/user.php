@@ -18,16 +18,16 @@ class User {
 	
 	// verify that user is still logged in and has permissions
 	public static function verify($edit = true) { // more like isEdit
-		$dbConn = new mysqlClass();
+		$dbh = new mysqlClass();
 		
 		// allow age-ing of hashes ( one minute after all instances closed lose privlages )
-		$dbConn->runQuery("DELETE FROM `web_authedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() )");
+		$dbh->runQuery("DELETE FROM `web_authedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() )");
 		
 		$access = false;
 		if (!isset($_COOKIE['hash'])) return false;
 		
-		$cleanHash = $dbConn->clean( $_COOKIE['hash'] );
-		$perms = $dbConn->runQuery("SELECT * FROM `web_v_perms` WHERE `userHash` = '$cleanHash'");
+		$cleanHash = $dbh->clean( $_COOKIE['hash'] );
+		$perms = $dbh->runQuery("SELECT * FROM `web_v_perms` WHERE `userHash` = '$cleanHash'");
 		
 		while (!$access && $accRow = mysql_fetch_assoc($perms)) {
 			if( strpos($_SERVER['REQUEST_URI'], $accRow['permPath']) === 0 || !$edit) $access = true;
@@ -40,9 +40,9 @@ class User {
 	public static function refresh() {
 		if (!isset($_COOKIE['hash'])) return;
 	
-		$dbConn = new mysqlClass();
-		$cleanHash = $dbConn->clean( $_COOKIE['hash'] );
-		$dbConn->runQuery("UPDATE `web_authedUsers` SET `created` = NOW( ) WHERE `userHash` = '$cleanHash' LIMIT 1 ;");
+		$dbh = new mysqlClass();
+		$cleanHash = $dbh->clean( $_COOKIE['hash'] );
+		$dbh->runQuery("UPDATE `web_authedUsers` SET `created` = NOW( ) WHERE `userHash` = '$cleanHash' LIMIT 1 ;");
 	}
 	
 	// webfunction to logout of all instances! checks if db changes (authenticon and permissions)
@@ -61,12 +61,12 @@ class User {
 	
 	// login user (web form function)
 	function login($user, $pass, $direct, $ref=false){
-		$dbConn = new mysqlClass();
+		$dbh = new mysqlClass();
 		
-		$username = $dbConn->clean($user);
-		$password = $dbConn->clean($pass);
+		$username = $dbh->clean($user);
+		$password = $dbh->clean($pass);
 		
-		$checklogin = $dbConn->runQuery("SELECT `userID` FROM `web_users` WHERE `userName` = '$username' AND `password` = sha1('$password')");
+		$checklogin = $dbh->runQuery("SELECT `userID` FROM `web_users` WHERE `userName` = '$username' AND `password` = sha1('$password')");
 
 		if(mysql_num_rows($checklogin) == 1) {
 			$row = mysql_fetch_array($checklogin);
@@ -75,8 +75,8 @@ class User {
 			$hash = base64_encode(sha1($password . sha1($row['userID'] . rand())) . sha1($row['userID'] . rand()) . config::hashMAGIC);
 			
 			// make sure hasn't already logged in! - unique field
-			$dbConn->runQuery("INSERT INTO `web_authedUsers` (`userID`, `userHash` ) VALUES ('" . $row['userID'] . "', '$hash');");
-			$hasHash = mysql_fetch_assoc($dbConn->runQuery("SELECT `userHash` FROM `web_authedUsers` WHERE authID = LAST_INSERT_ID() OR userID = '" . $row['userID'] . "'"));
+			$dbh->runQuery("INSERT INTO `web_authedUsers` (`userID`, `userHash` ) VALUES ('" . $row['userID'] . "', '$hash');");
+			$hasHash = mysql_fetch_assoc($dbh->runQuery("SELECT `userHash` FROM `web_authedUsers` WHERE authID = LAST_INSERT_ID() OR userID = '" . $row['userID'] . "'"));
 			
 			setcookie('hash', $hasHash['userHash']);
 			$d = array("msg" => self::LOGIN_SUCCESS, "reload" => true);
@@ -105,8 +105,8 @@ class User {
 	
 	// logout a user (web form function)
 	function logout($direct, $ref=false){
-		$dbConn = new mysqlClass();
-		$dbConn->runQuery("DELETE FROM `web_authedUsers` WHERE `userHash` = '" . $dbConn->clean($_COOKIE['hash']) . "' LIMIT 1");
+		$dbh = new mysqlClass();
+		$dbh->runQuery("DELETE FROM `web_authedUsers` WHERE `userHash` = '" . $dbh->clean($_COOKIE['hash']) . "' LIMIT 1");
 		setcookie('hash', '', time() - 3600);
 		$d = array("msg" => self::LOGOUT_SUCCESS);
 		if ($direct) return self::direct_handler($d, $ref);

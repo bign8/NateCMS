@@ -13,6 +13,7 @@ Move /login /logout and other pages generated in php to database generated pages
 Implement /db404 page so that there are no db queries on that page
 Implement custom extensions
 Implement new database class + convert to PDO
+Handle errors when adding content block
 
 Database View Queries:
 web_v_page: SELECT `web_vfs`.*, `web_template`.`name`, `web_template`.`body`, `web_template`.`header`, `web_template`.`footer` FROM `web_vfs`JOIN `web_template` ON `web_vfs`.`templateID` = `web_template`.`templateID`

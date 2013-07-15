@@ -6,7 +6,7 @@
   <meta name="keywords" content="{$keywords}">
   <meta name="author" content="Nate Woods">
   <meta charset="UTF-8" />
-  
+
   <link rel="stylesheet" type="text/css" href="/css/ui-lightness/jquery-ui-1.8.16.custom.css" />
   <link rel="stylesheet" type="text/css" href="/css/Default.css" />
   <script src="/js/jquery-1.7.min.js" ></script>
@@ -15,6 +15,8 @@
   <script src="/js/jquery-ui-1.8.16.custom.min.js" ></script>
   <script src="/js/all.js" ></script>
   <link rel="stylesheet" type="text/css" href="/dynamic/blank/css.css" id="toSwitch" />
+
+  {*<!-- 
   <script>
 	{literal}
 	if($.cookie("css")) {
@@ -29,10 +31,9 @@
 	});
 	{/literal}
   </script>
-  
   <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here' rel='stylesheet' type='text/css'>
- 
+  
   <script type="text/javascript">
   WebFontConfig = {
     google: { families: [ 'Great+Vibes::latin' ] }
@@ -45,8 +46,9 @@
     wf.async = 'true';
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(wf, s);
-  })(); </script>
-  {if $smarty.get.mode == 'edit'}
+  })(); </script> -->*}
+
+  {if isset($smarty.get.mode) && $smarty.get.mode == 'edit'}
 	<script src="/js/EditAll.js" ></script>
   {/if}
   
