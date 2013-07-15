@@ -11,10 +11,10 @@ class PageClass {
 	private $isEditer	= false;
 	
 	// handles for things
-	private $dbh; // DataBase Handle
+	private $DBH; // DataBase Handle
 	
 	public function __construct(){
-		$this->dbh = new mysqlClass();
+		$this->DBH = new dbConnect();
 	}
 	
 	public function Run() {
@@ -32,9 +32,10 @@ class PageClass {
 		$tpl->assign('keywords',	$this->pageVals['keywords']);
 		$tpl->assign('desc',		$this->pageVals['description']);
 		$tpl->assign('title',		$this->pageVals['title']);
-		$tpl->assign('vfsID',		$this->pageVals['vfsID']);//*/
-		
-		//$tpl->assign('pageVals', $this->pageVals); // smarty test - fail :(
+		$tpl->assign('vfsID',		$this->pageVals['vfsID']);
+		/*/
+		$tpl->assign('pageVals', $this->pageVals); // smarty test - fail :(
+		//*/
 		
 		$tpl->assign('content',		$this->content);
 		$tpl->assign('dynInclude',	$this->dynInclude);
@@ -47,14 +48,12 @@ class PageClass {
 	
 	private function getPage($url) {
 		$edit = (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit');
-		
-		$url = $this->dbh->clean($url);
-		
-		$q = "SELECT * FROM `web_v_page` WHERE `path`='{$url}'";
-		$pageQuery = $this->dbh->runQuery($q);
-		
-		if ( mysql_num_rows($pageQuery) != 0 ) {
-			$rec = mysql_fetch_assoc($pageQuery);
+
+		$pageSTH = $this->DBH->prepare("SELECT * FROM `web_v_page` WHERE `path`= ? ;");
+		$pageSTH->execute( array( $url ) );
+
+		if ( $pageSTH->rowCount() != 0 ) {
+			$rec = $pageSTH->fetch( PDO::FETCH_ASSOC );
 			$this->pageVals = $rec;
 			
 			// update time on login certificate or remove cookie if not logged in
@@ -74,20 +73,21 @@ class PageClass {
 				if (!$this->isEditer) die("<script>alert('You are not authorized to edit this web page.\\nIf you feel this is an error, please contact the Webmaster.');window.location.href = \"{$_SERVER['REDIRECT_URL']}\";</script>");
 				
 				// add block names for edit mode
-				$q = "SELECT blockID, name, description FROM `web_block`";
-				$this->blocks = $this->dbh->fetchAllAssoc($q);
+				$editSTH = $this->DBH->query("SELECT blockID, name, description FROM `web_block`;");
+				$this->blocks = $editSTH->fetchAll( PDO::FETCH_ASSOC );
 			}
 			
 			// get page content
-			$q = "SELECT * FROM `web_v_content` WHERE `vfsID`='{$rec['vfsID']}'";// ORDER BY `orders` ASC"; // done by view
-			$contentQuery = $this->dbh->runQuery($q);
-			while ($row = mysql_fetch_assoc($contentQuery)) {
-				$this->content[$row['locName']][] = $row; // special encoding, no fetchAllAssoc possible
+			$contentSTH = $this->DBH->prepare("SELECT * FROM `web_v_content` WHERE `vfsID` = ? ORDER BY `orders` ASC;");
+			$contentSTH->execute( array( $rec['vfsID'] ) );
+			while ($row = $contentSTH->fetch( PDO::FETCH_ASSOC )) {
+				$this->content[$row['locName']][] = $row; // special encoding, no fetchAll possible
 			}
 			
-			// load dynamic includes
-			$q = "SELECT * FROM `web_v_scripts` WHERE `edit` = '".($edit?'yes':'no')."' AND `blockID` IN (SELECT distinct(blockID) FROM web_content WHERE vfsID = {$rec['vfsID']}) ORDER BY `loadOrder` ASC;"; // optimize this query
-			$this->dynInclude = $this->dbh->fetchAllAssoc($q);
+			// load dynamic includes // optimize this query
+			$scrSTH = $this->DBH->prepare("SELECT * FROM `web_v_scripts` WHERE `edit` = ? AND `blockID` IN (SELECT distinct(blockID) FROM web_content WHERE vfsID = ?) ORDER BY `loadOrder` ASC;");
+			$scrSTH->execute( array( $edit?'yes':'no' , $rec['vfsID'] ) );
+			$this->dynInclude = $scrSTH->fetchAll( PDO::FETCH_ASSOC );
 			
 		} else {
 			// send proper error messages including refferer and client ip address

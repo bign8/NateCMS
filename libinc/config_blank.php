@@ -32,6 +32,11 @@ class config {
 		constants to reduce injection attacks and stop programmatically
 		changing of them.
 	*/
+	const db_dsn	= 'PDO CONECTION STRING GOES HERE';
+	const db_user	= null; // if mysql, db server username string
+	const db_pass	= null; // if mysql, db server password string
+	const db_opt	= null; // PDO connection options
+	
 	const mysql_Host     = 'your.mysql-host.com';
 	const mysql_UserName = 'your.mysql.username';
 	const mysql_Password = 'your.mysql.password';

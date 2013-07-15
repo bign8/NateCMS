@@ -3,7 +3,7 @@ include("site_inc.php");
 
 class Edit {
 	// WARNING: Changing this will mess up the webConHistory table
-	public static $NUM_OF_HISTORY = 5; 
+	public static $NUM_OF_HISTORY = 5; // move to config
 
 	function updateContent($cid, $content) {
 		$dbConn = new mysqlClass();

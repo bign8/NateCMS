@@ -21,5 +21,7 @@
 		</form>
 	</div>
 {else}
-	{foreach from=$content[$id] item=foo}{include file=$foo['renderer'] item=$foo}{/foreach}
+	{if isset($content[$id])}
+		{foreach from=$content[$id] item=foo}{include file=$foo['renderer'] item=$foo}{/foreach}
+	{/if}
 {/if}

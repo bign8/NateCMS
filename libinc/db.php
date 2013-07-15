@@ -55,11 +55,10 @@ class mysqlClass{
 	}
 }
 
-class dbConnect {
-	public static function connect() {
+class dbConnect extends PDO {
+	public function __construct() {
 		try {
-			$dbh = new PDO( config::db_dsn, config::db_user, config::db_pass, config::db_opt );
-			return $dbh;
+			parent::__construct( config::db_dsn, config::db_user, config::db_pass, config::$db_opt );
 		} catch (PDOException $e) {
 			if( $_SERVER['REQUEST_URI'] != '/db404' ) { // to be implemented
 				die($e->getMessage());
