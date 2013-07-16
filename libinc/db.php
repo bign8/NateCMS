@@ -1,5 +1,7 @@
 <?php
 
+// http://www.switchonthecode.com/tutorials/php-tutorial-creating-and-modifying-sqlite-databases
+
 class myPDO extends PDO {
 	public function __construct() {
 		try {
