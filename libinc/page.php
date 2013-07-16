@@ -14,7 +14,7 @@ class PageClass {
 	private $DBH; // DataBase Handle
 	
 	public function __construct(){
-		$this->DBH = new dbConnect();
+		$this->DBH = new myPDO();
 	}
 	
 	public function Run() {
@@ -69,6 +69,8 @@ class PageClass {
 			// Edit specefic processing
 			if ( $edit ) {
 				
+				// re-direct away from editing if on an error page
+
 				// Check credentials!
 				if (!$this->isEditer) die("<script>alert('You are not authorized to edit this web page.\\nIf you feel this is an error, please contact the Webmaster.');window.location.href = \"{$_SERVER['REDIRECT_URL']}\";</script>");
 				

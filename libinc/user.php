@@ -18,7 +18,7 @@ class User {
 	
 	// verify that user is still logged in and has permissions
 	public static function verify($edit = true) { // more like isEdit
-		$DBH = new dbConnect();
+		$DBH = new myPDO();
 		
 		// allow age-ing of hashes ( one minute after all instances closed lose privlages )
 		$DBH->query("DELETE FROM `web_authedUsers` WHERE `created` < TIMESTAMPADD( MINUTE, -1, NOW() );");
@@ -41,7 +41,7 @@ class User {
 	public static function refresh() {
 		if (!isset($_COOKIE['hash'])) return;
 	
-		$DBH = new dbConnect();
+		$DBH = new myPDO();
 		$STH = $DBH->prepare("UPDATE `web_authedUsers` SET `created` = NOW( ) WHERE `userHash` = ? LIMIT 1 ;");
 		$STH->execute( array($_COOKIE['hash']) );
 	}
@@ -62,7 +62,7 @@ class User {
 	
 	// login user (web form function)
 	function login($user, $pass, $direct, $ref=false){
-		$DBH = new dbConnect();
+		$DBH = new myPDO();
 
 		$loginSTH = $DBH->prepare("SELECT `userID` FROM `web_users` WHERE `userName` = ? AND `password` = sha1( ? );");
 		$loginSTH->execute( array($user, $pass) );
@@ -108,10 +108,10 @@ class User {
 	
 	// logout a user (web form function)
 	function logout($direct, $ref=false){
-		$DBH = new dbConnect();
+		$DBH = new myPDO();
 		$STH = $DBH->prepare("DELETE FROM `web_authedUsers` WHERE `userHash` = ? ;");
 		$STH->execute( array( $_COOKIE['hash'] ) );
-		
+
 		setcookie('hash', '', time() - 3600);
 		$d = array("msg" => self::LOGOUT_SUCCESS);
 		if ($direct) return self::direct_handler($d, $ref);
