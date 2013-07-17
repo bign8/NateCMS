@@ -12,6 +12,7 @@ class config {
 		will be used all over
 	*/
 	const AppName = 'Name of the Application for errors';
+	const Extension = 'n8'; // extension of all files on your site
 
 	##################################################
 	# Email Configuration                            #

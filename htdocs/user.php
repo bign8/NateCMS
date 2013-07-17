@@ -1,6 +1,7 @@
 <?php
 require_once('../libinc/user.php');
-	
+
+if (!isset($_REQUEST['action'])) die("Your kung-fu is no good here");
 switch ($_REQUEST['action']){
 	// Login a user
 	case 'login':

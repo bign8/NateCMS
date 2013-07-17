@@ -1,18 +1,10 @@
-ErrorDocument 404 /handler.php
-
-#RewriteEngine On
-#RewriteCond %{REQUEST_FILENAME}  !-d
-#RewriteCond %{REQUEST_FILENAME}  !-f
-#RewriteRule ^.+\.om(\?.+)?$ /handler.php [T=application/x-httpd-php,L] 
+#ErrorDocument 404 /404
+DirectoryIndex /handler.php # does this work?
 
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME}  !-f
-#RewriteCond %{REQUEST_URI} !/user.php$
-
-#
-# Needed for phpMyAdmin
-#
 #RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !/user.php$
 
 RewriteRule $ /handler.php [L]
 

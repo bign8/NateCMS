@@ -18,8 +18,14 @@ class PageClass {
 	}
 	
 	public function Run() {
-		$page= $_SERVER['REDIRECT_URL']; // or 'SCRIPT_URL'
-		if(strrchr($page, "/") == "/") $page .= 'index'; // add index to each directory
+		$page = $_SERVER['REQUEST_URI']; // $_SERVER['REDIRECT_URL']; // or 'SCRIPT_URL'
+
+		if(strrchr($page, "/") == "/") {
+			$page .= 'index'; // add index to each directory
+		} else {
+			$page = substr( $page, 0, strrpos( $page, '.'.config::Extension ) ); // enforce extensions
+		}
+		//echo 'Page: ', $page, '<pre>', print_r($_SERVER, true), '</pre>';
 		self::getPage($page);
 		
 		$smarty	= new SmartyConfig();
