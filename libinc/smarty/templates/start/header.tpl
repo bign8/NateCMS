@@ -1,11 +1,11 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>{$title}</title>
   <meta name="description" content="{$desc}">
   <meta name="keywords" content="{$keywords}">
   <meta name="author" content="Nate Woods">
-  <meta charset="UTF-8" />
 
   <link rel="stylesheet" type="text/css" href="/css/ui-lightness/jquery-ui-1.8.16.custom.css" />
   <link rel="stylesheet" type="text/css" href="/css/Default.css" />
@@ -56,8 +56,10 @@
 </head>
 <body>
 	<div id="wrapper">
-		<div id="header">
-			<h1>CS389 Template demo server</h1>
-			<span style="text-align:center;"><a href="/">HOME</a></span>
-		</div>
+		<header>
+      <hgroup>
+    		<h1><a href="/">Nate Stats Dev Server</a></h1>
+        <h2>See the <a href="https://github.com/bign8/NateCMS">repo</a> for more informaiton.</h2>
+      </hgroup>
+		</header>
 		<div id="body">

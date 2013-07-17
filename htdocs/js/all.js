@@ -21,7 +21,7 @@ var General = {
 							// secure login here? -- WORK ON ASAP
 							$.ajax({
 								url:'/user.php',
-								data: 'action=login&user=' + form.user.value + '&pass=' + form.pass.value,
+								data: 'action=login&user=' + form.user.value + '&pass=' + form.pass.value + '&referer=blank',
 								dataType:'json',
 								success:function(json){
 									//alert(json.reload + "-" + (json.reload === true) + "-" + (json.reload === false));
@@ -54,7 +54,7 @@ var General = {
 						
 						$.ajax({
 							url:'/user.php',
-							data: 'action=logout',
+							data: 'action=logout&referer=blank',
 							dataType:'json',
 							success:function(json){
 								$('#response', '#webLogout').html(json.msg);
@@ -70,6 +70,7 @@ var General = {
 				open: function(event, ui) { $('.ui-dialog-titlebar-close').hide(); },
 				close: function() { dialog.dialog( 'destroy' ); dialog.remove(); }
 			});
+		return false;
 	}
 };
 

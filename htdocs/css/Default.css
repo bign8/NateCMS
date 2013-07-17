@@ -1,18 +1,62 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
 body {
-	margin:0;
-	padding:0;
-	text-align:center;
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* BEGIN SITE STYLES */
+/* css magic with screen size selectors? see: http://lessframework.com/ */
+
+body {
 	font-size:10pt;
 	background-color:#eee;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-/* css magic with screen size selectors? */
-
-p {
-	margin: 0px;
-}
-#wrapper, #styleNav {
+#wrapper/*, #styleNav*/ {
 	width:800px;
 	text-align:left;
 	margin:50px auto;
@@ -23,7 +67,7 @@ p {
 	-webkit-border-radius:15px;
 	box-shadow:0 0 40px gray;
 }
-#header {
+header {
 	height:100px;
 	background:grey;
 	padding:10px;
@@ -32,7 +76,7 @@ p {
 	border-radius:10px 10px 0 0;
 	-moz-border-radius:10px 10px 0 0;
 	-webkit-border-radius:10px 10px 0 0;
-}
+}/*
 #styleNav ul {
 	padding:10px;
 	margin: 5px;
@@ -46,7 +90,7 @@ p {
 	list-style: none;
 	float: left;
 	padding-right: 10px;
-}
+}*/
 #body {
 	
 }
@@ -58,17 +102,34 @@ p {
 	float:right;
 	width: 500px;
 }
-#footer	{
+footer	{
 	height:50px;
 	background:grey;
 	padding:10px;
 	margin:5px;
 	clear:both;
 	border-radius:0 0 10px 10px;
+	text-align: center;
 	-moz-border-radius:0 0 10px 10px;
 	-webkit-border-radius:0 0 10px 10px;
 }
 
+
+#editorNav {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	padding: 10px;
+}
+#editorNav ul{
+
+}
+#editorNav ul li {
+	display: inline;
+	margin-left: 10px;
+}
+
+/* EDITER styles */
 #right .block , #right .block-edit {margin:5px;padding:10px;background:grey;}
 #left .block , #left .block-edit {margin:5px 0 5px 5px;padding:10px;background:grey;}
 #left .block-edit {margin-right: 5px;} /* editer fix*/ 
