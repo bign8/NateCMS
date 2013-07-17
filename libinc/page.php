@@ -18,12 +18,15 @@ class PageClass {
 	}
 	
 	public function Run() {
-		$page = $_SERVER['REQUEST_URI']; // $_SERVER['REDIRECT_URL']; // or 'SCRIPT_URL'
+		$page = $_SERVER['REDIRECT_URL']; // $_SERVER['REDIRECT_URL']; // or 'SCRIPT_URL'
+		//$page = substr( $page, 0, strrpos( $page, "?"));
 
 		if(strrchr($page, "/") == "/") {
 			$page .= 'index'; // add index to each directory
 		} else {
-			$page = substr( $page, 0, strrpos( $page, '.'.config::Extension ) ); // enforce extensions
+			if (config::Extension != '') {
+				$page = substr( $page, 0, strrpos( $page, '.'.config::Extension ) ); // enforce extensions
+			}
 		}
 		//echo 'Page: ', $page, '<pre>', print_r($_SERVER, true), '</pre>';
 		self::getPage($page);
@@ -56,7 +59,7 @@ class PageClass {
 		$edit = (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit');
 
 		$pageSTH = $this->DBH->prepare("SELECT * FROM `web_v_page` WHERE `path`= ? ;");
-		$pageSTH->execute( array( $url ) );
+		$pageSTH->execute( $url );
 
 		if ( $pageSTH->rowCount() != 0 ) {
 			$rec = $pageSTH->fetch( PDO::FETCH_ASSOC );
@@ -87,14 +90,14 @@ class PageClass {
 			
 			// get page content
 			$contentSTH = $this->DBH->prepare("SELECT * FROM `web_v_content` WHERE `vfsID` = ? ORDER BY `orders` ASC;");
-			$contentSTH->execute( array( $rec['vfsID'] ) );
+			$contentSTH->execute( $rec['vfsID'] );
 			while ($row = $contentSTH->fetch( PDO::FETCH_ASSOC )) {
 				$this->content[$row['locName']][] = $row; // special encoding, no fetchAll possible
 			}
 			
 			// load dynamic includes // optimize this query
 			$scrSTH = $this->DBH->prepare("SELECT * FROM `web_v_scripts` WHERE `edit` = ? AND `blockID` IN (SELECT distinct(blockID) FROM web_content WHERE vfsID = ?) ORDER BY `loadOrder` ASC;");
-			$scrSTH->execute( array( $edit?'yes':'no' , $rec['vfsID'] ) );
+			$scrSTH->execute( ($edit?'yes':'no') , $rec['vfsID'] );
 			$this->dynInclude = $scrSTH->fetchAll( PDO::FETCH_ASSOC );
 			
 		} else {

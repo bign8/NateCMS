@@ -27,7 +27,7 @@ class User {
 		if (isset($_COOKIE['hash'])) {
 		
 			$STH = $DBH->prepare("SELECT * FROM `web_v_perms` WHERE `userHash` = ? ;");
-			$STH->execute( array($_COOKIE['hash']) );
+			$STH->execute( $_COOKIE['hash'] );
 
 			while (!$access && $accRow = $STH->fetch( PDO::FETCH_ASSOC )) {
 				if( strpos($_SERVER['REQUEST_URI'], $accRow['permPath']) === 0 || !$edit) $access = true;
@@ -43,7 +43,7 @@ class User {
 	
 		$DBH = new myPDO();
 		$STH = $DBH->prepare("UPDATE `web_authedUsers` SET `created` = NOW( ) WHERE `userHash` = ? LIMIT 1 ;");
-		$STH->execute( array($_COOKIE['hash']) );
+		$STH->execute( $_COOKIE['hash'] );
 	}
 	
 	// webfunction to logout of all instances! checks if db changes (authenticon and permissions)
@@ -65,7 +65,7 @@ class User {
 		$DBH = new myPDO();
 
 		$loginSTH = $DBH->prepare("SELECT `userID` FROM `web_users` WHERE `userName` = ? AND `password` = sha1( ? );");
-		$loginSTH->execute( array($user, $pass) );
+		$loginSTH->execute( $user, $pass );
 
 		if($loginSTH->rowCount() == 1) {
 			$row = $loginSTH->fetch( PDO::FETCH_ASSOC );
@@ -75,10 +75,10 @@ class User {
 			
 			// make sure hasn't already logged in! - unique field
 			$insertSTH = $DBH->prepare("INSERT INTO `web_authedUsers` (`userID`, `userHash` ) VALUES ( ?, ? );"); // find a way to skip errors here so next step can fire
-			$insertSTH->execute( array( $row['userID'], $hash ) );
+			$insertSTH->execute( $row['userID'], $hash );
 
 			$authSTH = $DBH->prepare("SELECT `userHash` FROM `web_authedUsers` WHERE authID = LAST_INSERT_ID() OR userID = ? ;");
-			$authSTH->execute( array( $row['userID'] ) );
+			$authSTH->execute( $row['userID'] );
 			$hasHash = $authSTH->fetch( PDO::FETCH_ASSOC );
 			
 			setcookie('hash', $hasHash['userHash']);
@@ -110,7 +110,7 @@ class User {
 	function logout($direct, $ref=false){
 		$DBH = new myPDO();
 		$STH = $DBH->prepare("DELETE FROM `web_authedUsers` WHERE `userHash` = ? ;");
-		$STH->execute( array( $_COOKIE['hash'] ) );
+		$STH->execute( $_COOKIE['hash'] );
 
 		setcookie('hash', '', time() - 3600);
 		$d = array("msg" => self::LOGOUT_SUCCESS);
