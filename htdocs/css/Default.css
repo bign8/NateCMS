@@ -69,7 +69,7 @@ body {
 }
 header {
 	height:100px;
-	background:grey;
+	background-color:#eee;
 	padding:10px;
 	margin: 5px 5px 0 5px;
 	text-align: center;
@@ -104,7 +104,7 @@ header {
 }
 footer	{
 	height:50px;
-	background:grey;
+	background-color:#eee;
 	padding:10px;
 	margin:5px;
 	clear:both;
@@ -114,7 +114,11 @@ footer	{
 	-webkit-border-radius:0 0 10px 10px;
 }
 
+/* content styles */
+p { margin-bottom: 1em }
+p:last-child { margin-bottom: 0 }
 
+/* editor nav styles */
 #editorNav {
 	position: fixed;
 	bottom: 0;
@@ -122,19 +126,30 @@ footer	{
 	padding: 10px;
 }
 #editorNav ul{
-
+	border: 1px solid black;
+	padding: 5px;
+	border-radius: 6px;
 }
 #editorNav ul li {
 	display: inline;
 	margin-left: 10px;
 }
+#editorNav ul li:first-child {
+	margin-left: 0;
+}
+#editorNav a:link, #editorNav a:visited {
+	text-decoration: none;
+}
+#editorNav a:hover, #editorNav a:active {
+	text-decoration: underline;
+}
 
 /* EDITER styles */
-#right .block , #right .block-edit {margin:5px;padding:10px;background:grey;}
-#left .block , #left .block-edit {margin:5px 0 5px 5px;padding:10px;background:grey;}
+#right .block , #right .block-edit {margin:5px;padding:10px;background-color:#eee;}
+#left .block , #left .block-edit {margin:5px 0 5px 5px;padding:10px;background-color:#eee;}
 #left .block-edit {margin-right: 5px;} /* editer fix*/ 
-.block-state-highlight {border:2px dashed grey;margin:5px;padding:10px;text-align:center;color:grey;}
-.sortable {background:#EEEEEE;margin:5px;border:2px dashed grey;}
+.block-state-highlight {border:2px dashed #aaa;margin:5px;padding:10px;text-align:center;color:#777;}
+.sortable {background-color:#fff;margin:5px;border:2px dashed #aaaaaa;}
 .controls {float:right;margin:0 0 4px 4px;}
 .add-new {text-align:center;}
 .loading {width:16px;height:16px;background-image:url(/images/ajax-loader.gif); }

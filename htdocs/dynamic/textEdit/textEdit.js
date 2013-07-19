@@ -9,15 +9,24 @@ var textEditObj = {
 			obj.parent().append('<span class="continued ui-icon ui-icon-arrowthick-1-s" title="Content truncated" onClick="textEditObj.toggleTrunc(this);"></span>');
 			obj.addClass('truncated');
 		}
+		if (obj.parent().find('.controls').length < 1) { // don't start it twice
+			obj.parent().prepend('<span class="controls">'+
+				'<span class="edit ui-icon ui-icon-pencil" style="float:left;" title="Edit content" onClick="textEditObj.init(this);"></span>'+
+				'<span class="move ui-icon ui-icon-transferthick-e-w" style="float:left;" title="Move content"></span>'+
+				'<span class="delete ui-icon ui-icon-closethick" style="float:left;" title="Delete coontent" onClick="Editer.killMe(this);" ></span>'+
+			'</span>');
+		}
 	},
 	toggleTrunc: function(that) {
 		$(that).toggleClass('ui-icon-arrowthick-1-s ui-icon-arrowthick-1-n').parent().find('.content').toggleClass('truncated');
 	},
-	check: function(id) {
+	check: function(id) { // what does this do?
 		for (var attr in this) if(this[attr].id == id) return true;
 		return false;
 	},
-	init: function(id) {
+	init: function(that) {
+		var id = $(that).parent().parent().attr('id');
+		
 		if ( this.check(id) ) return; // ensure instance is not already running
 		
 		var sid = '#' + id;
