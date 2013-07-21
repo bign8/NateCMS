@@ -1,0 +1,14 @@
+
+
+/* editor specific */
+.block-edit.text div.truncated { max-height:150px; overflow:hidden;}
+.block-edit.text span.continued { float:right; position:relative; top:-10px; right:-5px;}
+
+ /* location select so sizes can be explizit */
+/*
+#left .mceEditor > table {
+    width:247px !important;
+}
+#right .mceEditor > table {
+    width:447px !important;
+}*/

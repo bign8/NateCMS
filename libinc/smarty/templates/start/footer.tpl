@@ -3,18 +3,6 @@
 			Produced by NW PRODUCTIONS, CMS AND ALL
 		</footer>
 	</div> {* wrapper *}
-	{*<!-- 
-		<div id="styleNav">
-			<ul>
-				<li>Styles: </li>
-				<li><a href="" rel="/dynamic/blank/css.css">Default</a></li>
-				<li><a href="" rel="/dynamic/syd/css.css">Sydney</a></li>
-				<li><a href="" rel="/dynamic/tay/css.css">Taylor</a></li>
-				<li><a href="" rel="/dynamic/dev/css.css">Devon</a></li>
-				<li><a href="" rel="/dynamic/alex/css.css">Alex</a></li>
-			</ul>
-		</div>
-		 -->*}
 	<div id="editorNav">
 		<ul>
 		{if $isEditer}
