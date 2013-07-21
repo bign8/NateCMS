@@ -34,3 +34,6 @@ Please note the configuration of your webserver
 - [ ] Edit - work on webHistory feature
 - [ ] Implement auto nav -> looking for index or use parentID in database
 - [ ] self Install feature?
+- [ ] only show "(make it a page)" link on pages with proper extension
+- [ ] Fully isolate editor and improve design
+- [ ] Security issue, why are there more than 1 way to authenticate with the site?

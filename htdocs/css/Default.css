@@ -118,7 +118,7 @@ p:last-child { margin-bottom: 0 }
 }
 #editorNav ul li {
 	display: inline;
-	margin-left: 10px;
+	/*margin-left: 10px; With the links being icons, this is not needed*/
 }
 #editorNav ul li:first-child {
 	margin-left: 0;
@@ -130,6 +130,10 @@ p:last-child { margin-bottom: 0 }
 	text-decoration: underline;
 }
 
+.ui-icon {
+	display: inline-block !important; /* SHAME.CSS this is to fix the shuffle icon in the editor bar */
+}
+
 /* EDITER styles */
 #right .block , #right .block-edit {margin:5px;padding:10px;background-color:#eee;}
 #left .block , #left .block-edit {margin:5px 0 5px 5px;padding:10px;background-color:#eee;}
@@ -137,6 +141,7 @@ p:last-child { margin-bottom: 0 }
 .block-state-highlight {border:2px dashed #aaa;margin:5px;padding:10px;text-align:center;color:#777;}
 .sortable {background-color:#fff;margin:5px;border:2px dashed #aaaaaa;}
 .controls {float:right;margin:0 0 4px 4px;}
+.controls span {float:left;}
 .add-new {text-align:center;}
 .loading {width:16px;height:16px;background-image:url(/images/ajax-loader.gif); }
 .emph { color: #C00000; }

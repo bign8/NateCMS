@@ -1,4 +1,4 @@
-<div id="{$item['contentID']}" class="block-edit iframe">
+<div class="block-edit iframe" data-contentid="{$item['contentID']}">
 	<div class="content">
 		IFRAME: {$item['content']}
 	</div>

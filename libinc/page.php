@@ -18,7 +18,7 @@ class PageClass {
 	}
 	
 	public function Run() {
-		$page = $_SERVER['REDIRECT_URL']; // $_SERVER['REDIRECT_URL']; // or 'SCRIPT_URL'
+		$page = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] ; // here I should parse the querystring out of request_uri
 		//$page = substr( $page, 0, strrpos( $page, "?"));
 
 		if(strrchr($page, "/") == "/") {
