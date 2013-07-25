@@ -1,8 +1,8 @@
-<div id="right">
+<div id="main" class="sortable">
 {include file='blocks/blocker.tpl' id='main' content=$content}
 </div>
 
-<div id="left">
+<div id="nav" class="sortable">
 {include file='blocks/blocker.tpl' id='nav' content=$content}
 </div>
 

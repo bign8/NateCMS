@@ -9,7 +9,8 @@
 			{if !isset($smarty.get.mode) || $smarty.get.mode != 'edit'}
 				<li><a href="{$smarty.server.REDIRECT_URL}?mode=edit" class="ui-icon ui-icon-pencil" title="Edit Page">Edit</a></li>
 			{else}
-				<li><a href="#shuffle!" class="ui-icon ui-icon-shuffle" title="Re-order Content">Re-order Content</a></li>
+				<li id="orderDisable" style="display:none"><a href="#shuffle!" class="ui-icon ui-icon-check" title="Save Re-order" onclick="return Editor.orderDisable();">Save Re-order</a></li>
+				<li id="orderEnable"><a href="#shuffle!" class="ui-icon ui-icon-shuffle" title="Re-order Content" onclick="return Editor.orderEnable();">Re-order Content</a></li>
 				<li><a href="{$smarty.server.REDIRECT_URL}" class="ui-icon ui-icon-circle-close" title="Close Editor">Close</a></li>
 			{/if}
 			{*<a href="/logout">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;*}

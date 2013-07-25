@@ -1,18 +1,22 @@
 $(document).ready(function () {
 	// Drag and drop content for pages
-	Editer.list = $( '.sortable' ).sortable({
-		start: function (e, ui) { /*ui.placeholder.html('Content Destination');*/ $('.block-edit').trigger('startMove'); }, // pretty up placeholder
-		stop: function(e, ui) { $('.block-edit').trigger('endMove'); },
-		opacity: 0.6, cursor: 'move', placeholder: 'block-state-highlight', forcePlaceholderSize: true,
-		connectWith: '.sortable', handle: 'span.move', items: '.block-edit', 
-		update: Editer.orderBlock
+	Editor.list = $( '.sortable' ).sortable({
+		start: function (e, ui) { /*ui.placeholder.html('Content Destination');*/ }, // pretty up placeholder
+		opacity: 0.6,
+		cursor: 'move',
+		placeholder: 'block-state-highlight',
+		forcePlaceholderSize: true,
+		connectWith: '.sortable',
+		items: '.block-edit',
+		disabled: true,
+		update: Editor.orderBlock
 	}).disableSelection();
 
 	// Initialize loader content on each block location
-	$('.block-edit').each(Editer.initBlock);
+	$('.block-edit').each(Editor.initBlock);
 });
 
-var Editer = { 
+var Editor = {
 	// --- VARIABLES ---
 	name: 'Main Editor Object',
 	version: '1.0',
@@ -24,9 +28,9 @@ var Editer = {
 	initBlock: function(index, that) {
 		// Load block edit menu on each edit block
 		$(that).prepend('<span class="controls">'+
-			'<span class="edit ui-icon ui-icon-pencil" title="Edit content" onClick="Editer.editBlock(this);"></span>'+
-			'<span class="move ui-icon ui-icon-transferthick-e-w" title="Move content"></span>'+
-			'<span class="delete ui-icon ui-icon-closethick" title="Delete coontent" onClick="Editer.removeBlock(this);" ></span>'+
+			'<span class="edit ui-icon ui-icon-pencil" title="Edit content" onClick="Editor.editBlock(this);"></span>'+
+			// '<span class="move ui-icon ui-icon-transferthick-e-w" title="Move content" style="display:none"></span>'+
+			'<span class="delete ui-icon ui-icon-closethick" title="Delete coontent" onClick="Editor.removeBlock(this);" ></span>'+
 		'</span>');
 
 		// Listen to close events on each edit object
@@ -42,9 +46,25 @@ var Editer = {
 		obj.trigger('startEdit');
 	},
 
+	// Called by a button in the footer during mode=edit, this enables sortable.
+	orderEnable: function() {
+		$('.block-edit').trigger('enableMove');
+		Editor.list.sortable('enable');
+		$('.edit,.move,.delete,#orderEnable,#orderDisable').toggle();
+		return false;
+	},
+
+	// called by a button in the footer during mode=edit, this saves and disables sortable
+	orderDisable: function() {
+		$('.block-edit').trigger('disableMove');
+		Editor.list.sortable('disable');
+		$('.edit,.move,.delete,#orderEnable,#orderDisable').toggle();
+		return false;
+	},
+
 	// Called as the sortable callback, this iterates through all the blocks on a page and saves their order.
 	orderBlock: function() {
-		Editer.list.sortable('disable');
+		Editor.list.sortable('disable');
 		var orders = [], data = 'action=updateOrder';
 		var rotatingClass = 'ui-icon-arrowrefresh-1-n', moveIcon = 'ui-icon-transferthick-e-w';
 
@@ -73,10 +93,10 @@ var Editer = {
 			url:'/edit.php',
 			data:data,
 			success:function(txt){
-				Editer.list.sortable('enable');
+				Editor.list.sortable('enable');
 				clearInterval(timer);
 				$('.sortable span.move').toggleClass(moveIcon + ' ' + rotatingClass);
-				if (txt != 'check') Editer.updateError();
+				if (txt != 'check') Editor.updateError();
 			}
 		});
 	},
@@ -101,7 +121,7 @@ var Editer = {
 							url:'/edit.php',
 							data:'action=removeContent&remID=' + remObj.data('contentid'),
 							success:function(txt){
-								if (txt != 'check') Editer.updateError();
+								if (txt != 'check') Editor.updateError();
 								clearInterval(timer);
 								progress.progressbar( 'destroy' );
 								dialog.dialog('close');
@@ -134,7 +154,7 @@ var Editer = {
 	// Makes the connection to server and activley adds content to the page
 	addContent: function(vfs, loc, that) {
 		var val = that['type_id'].value;
-		if (val == 'null') { Editer.revert(that); return false; } // User did not select anything
+		if (val == 'null') { Editor.revert(that); return false; } // User did not select anything
 		
 		var data = 'action=addContent&vfsID=' + vfs + '&loc=' + loc + '&blockID=' + val;
 		$.ajax({
@@ -142,9 +162,9 @@ var Editer = {
 			data:data,
 			dataType:'json',
 			success:function(json) {
-				if (json.check != 'check') Editer.updateError();
+				if (json.check != 'check') Editor.updateError();
 				var newObj = $('#' + loc).append(json.html).fadeIn('slow').children().last(); // selects last child
-				Editer.initBlock(-1, newObj); // initilized editor on newObj
+				Editor.initBlock(-1, newObj); // initilized editor on newObj
 				
 				// script insertion parser
 				var temp, srcObj;
@@ -165,7 +185,7 @@ var Editer = {
 				}
 				
 				
-				Editer.revert(that);
+				Editor.revert(that);
 			}
 		});
 		
@@ -194,7 +214,7 @@ var Editer = {
 			url:'/edit.php',
 			data:data,
 			success:function(txt){
-				if (txt != 'check') Editer.updateError();
+				if (txt != 'check') Editor.updateError();
 				if(typeof(cb) == 'function') cb();
 			}
 		});

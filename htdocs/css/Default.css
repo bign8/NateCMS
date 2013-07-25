@@ -80,11 +80,11 @@ header {
 #body {
 	
 }
-#left {
+#nav {
 	float:left;
 	width: 300px;
 }
-#right {
+#main {
 	float:right;
 	width: 500px;
 }
@@ -131,15 +131,15 @@ p:last-child { margin-bottom: 0 }
 }
 
 .ui-icon {
-	display: inline-block !important; /* SHAME.CSS this is to fix the shuffle icon in the editor bar */
+	display: inline-block; /* SHAME.CSS this is to fix the shuffle icon in the editor bar *//* !important*/
 }
 
 /* EDITER styles */
-#right .block , #right .block-edit {margin:5px;padding:10px;background-color:#eee;}
-#left .block , #left .block-edit {margin:5px 0 5px 5px;padding:10px;background-color:#eee;}
-#left .block-edit {margin-right: 5px;} /* editer fix*/ 
+#main .block , #main .block-edit {margin:5px;padding:10px;background-color:#eee;}
+#nav .block , #nav .block-edit {margin:5px 0 5px 5px;padding:10px;background-color:#eee;}
+/*#nav .block-edit {margin-right: 5px;} /* editer fix*/
 .block-state-highlight {border:2px dashed #aaa;margin:5px;padding:10px;text-align:center;color:#777;}
-.sortable {background-color:#fff;margin:5px;border:2px dashed #aaaaaa;}
+.sortable {background-color:#fff;/*margin:5px;*//*border:2px dashed #aaaaaa;*/}
 .controls {float:right;margin:0 0 4px 4px;}
 .controls span {float:left;}
 .add-new {text-align:center;}

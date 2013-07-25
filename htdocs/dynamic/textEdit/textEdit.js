@@ -11,36 +11,24 @@ var textEditObj = {
 	// Text Editer Functions
 	display: function(that) {
 		var obj = $(that);
-		console.log('display');
-		console.log(that);
-		console.log(typeof(that));
-		//if (!obj.hasClass('truncated')) 
-		if (obj.find('.content').height() >= 50) {
-			obj.append('<span class="continued ui-icon ui-icon-arrowthick-1-s" title="Content truncated" onClick="textEditObj.toggleTrunc(this);"></span>');
-			obj.find('.content').addClass('truncated');
-		}
 
 		obj.on('startEdit', function(evt){
 			textEditObj.init(evt.target);
 		});
-		obj.on('startMove', function(evt){
-			console.log('move Started');
-			// obj.css({
-			// 	'maxHeight': '50px',
-			// 	overflow: 'hidden'
-			// });
+		obj.on('enableMove', function(evt){
+			if (obj.find('.content').height() >= 50) {
+				obj.append('<span class="continued ui-icon ui-icon-arrowthick-1-s" title="Content truncated"></span>'); //  onClick="textEditObj.toggleTrunc(this);"
+				obj.find('.content').addClass('truncated');
+			}
 		});
-		obj.on('endMove', function(evt){
-			console.log('move Ended');
-			// obj.css({
-			// 	'maxHeight':'none',
-			// 	overflow:'visible'
-			// });
+		obj.on('disableMove', function(evt){
+			obj.find('.continued').remove();
+			obj.find('.content').removeClass('truncated');
 		});
 	},
-	toggleTrunc: function(that) {
-		$(that).toggleClass('ui-icon-arrowthick-1-s ui-icon-arrowthick-1-n').parent().find('.content').toggleClass('truncated');
-	},
+	// toggleTrunc: function(that) {
+	// 	$(that).toggleClass('ui-icon-arrowthick-1-s ui-icon-arrowthick-1-n').parent().find('.content').toggleClass('truncated');
+	// },
 	check: function(id) {
 		for (var attr in this) if(this[attr].id == id) return true;
 		return false;
