@@ -1,10 +1,10 @@
 <?php
 
 class PageClass {
-	public $pageVals	= array();
-	public $content		= array();
-	public $dynInclude	= array();
-	public $blocks		= array();
+	private $pageVals	= array();
+	private $content	= array();
+	private $dynInclude	= array();
+	private $blocks		= array();
 	
 	// bolean values for page magic
 	private $is404		= false;
@@ -18,8 +18,8 @@ class PageClass {
 	}
 	
 	public function Run() {
-		$page = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] ; // here I should parse the querystring out of request_uri
-		//$page = substr( $page, 0, strrpos( $page, "?"));
+		$page = $_SERVER['REQUEST_URI'] ;
+		if (strpos($page, '?') !== false) $page = substr( $page, 0, strrpos( $page, "?")); // clean query string
 
 		if(strrchr($page, "/") == "/") {
 			$page .= 'index'; // add index to each directory

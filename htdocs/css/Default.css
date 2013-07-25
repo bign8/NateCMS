@@ -60,12 +60,12 @@ body {
 	width:800px;
 	text-align:left;
 	margin:50px auto;
-	border:1px solid gray;
+	border:1px solid #c8c8c8;
 	background-color:white;
 	border-radius:15px;
 	-moz-border-radius:15px;
 	-webkit-border-radius:15px;
-	box-shadow:0 0 40px gray;
+	box-shadow:0 0 40px #c8c8c8;
 }
 header {
 	height:100px;
