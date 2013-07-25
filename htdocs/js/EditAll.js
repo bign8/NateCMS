@@ -21,6 +21,7 @@ var Editor = {
 	name: 'Main Editor Object',
 	version: '1.0',
 	list: [],
+	openEditors: [],
 
 	// --- GENERAL EDITOR FUNCTIONS ---
 
@@ -36,6 +37,10 @@ var Editor = {
 		// Listen to close events on each edit object
 		$(that).on('closeEdit', function(evt) {
 			$('.controls', evt.target).show();
+			var id = $(evt.target).data('contentid'); // remove from openEditors
+			var index = Editor.openEditors.indexOf( id );
+			Editor.openEditors.splice( index, 1 );
+			$('#orderEnable').toggle( Editor.openEditors.length == 0 ); // enable orderEnable?
 		});
 	},
 
@@ -44,6 +49,8 @@ var Editor = {
 		var obj = $(that).parent().parent(); // parent 1 -> .controls / parent 2 -> .block-edit
 		obj.find('.controls').hide();
 		obj.trigger('startEdit');
+		Editor.openEditors.push( obj.data('contentid') );
+		$('#orderEnable').hide(); // disable orderEnable
 	},
 
 	// Called by a button in the footer during mode=edit, this enables sortable.

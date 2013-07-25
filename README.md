@@ -14,14 +14,15 @@ Please note the configuration of your webserver
 [bign8](http://nathanjwoods.com)
 
 ### Development list
-- [x-ish] Rename tables to have underscores after web (ie: web_block, web_vfs, web_template)
 - [x] Change webScripts edit to an enum('yes', 'no') type
 - [x] Rename webContent location column to locID
 - [x] Implement load order in page.php near "get dynamic includes"
 - [x] Implement new database class + convert to PDO
 - [x] Implement custom file extensions
 - [x] Link logo and remove header text
+- [x] Change editor to have an enable/disable move feature
 - [x-ish] Move login/edit/close/logout buttons to magic bar that is out of the way (login preferably hidden and magically revealed)
+- [x-ish] Rename tables to have underscores after web (ie: web_block, web_vfs, web_template)
 - [ ] Implement dbError page (sent error emails, aditional config)
 - [ ] Rewrite so db actions is all sqlite friendly
 - [ ] Admin note - when new directory is created, automatically generate index file for new directory
@@ -37,3 +38,4 @@ Please note the configuration of your webserver
 - [ ] only show "(make it a page)" link on pages with proper extension
 - [ ] Fully isolate editor and improve design
 - [ ] Security issue, why are there more than 1 way to authenticate with the site?
+- [ ] Find a way to check if an element has an editor before opening it (also disable edit icon?)
