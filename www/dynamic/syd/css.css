@@ -1,0 +1,55 @@
+/* syds file */
+
+html {
+	height: 100%;
+}
+
+body {
+/* IE10 */ 
+	background-image: -ms-radial-gradient(left bottom, circle farthest-side, #FF760D 0%, #1E1EE6 25%, #17074D 100%);
+/* Mozilla Firefox */ 
+	background-image: -moz-radial-gradient(left bottom, circle farthest-side, #FF760D 0%, #1E1EE6 25%, #17074D 100%);
+/* Opera */ 
+	background-image: -o-radial-gradient(left bottom, circle farthest-side, #FF760D 0%, #1E1EE6 25%, #17074D 100%);
+/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(radial, left bottom, 0, left bottom, 784, color-stop(0, #FF760D), color-stop(0.25, #1E1EE6), color-stop(1, #17074D));
+/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-radial-gradient(left bottom, circle farthest-side, #FF760D 0%, #1E1EE6 25%, #17074D 100%);
+/* Proposed W3C Markup */ 
+	background-image: radial-gradient(left bottom, circle farthest-side, #FF760D 0%, #1E1EE6 25%, #17074D 100%);
+	color: white;
+}
+
+#wrapper, #styleNav {
+	border:none;
+	background-color:transparent;
+	box-shadow:none;
+}
+
+#header{
+	background:#8F61BA;
+}
+
+#footer, #styleNav ul{
+	background:#DB6A09;
+}
+
+#right .block, #left .block {
+/* IE10 */ 
+	background-image: -ms-linear-gradient(bottom, #FF760D 0%, #8D31DE 100%);
+
+/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(bottom, #FF760D 0%, #8D31DE 100%);
+
+/* Opera */ 
+	background-image: -o-linear-gradient(bottom, #FF760D 0%, #8D31DE 100%);
+
+/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #FF760D), color-stop(1, #8D31DE));
+
+/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(bottom, #FF760D 0%, #8D31DE 100%);
+
+/* Proposed W3C Markup */ 
+	background-image: linear-gradient(bottom, #FF760D 0%, #8D31DE 100%);
+}

@@ -1,0 +1,10 @@
+#ErrorDocument 404 /404
+DirectoryIndex /NateCMS/www/handler.php # does this work?
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !/user.php$
+
+RewriteRule $ /NateCMS/www/handler.php [L]
+
+Options -Indexes
