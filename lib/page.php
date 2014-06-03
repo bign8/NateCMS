@@ -18,7 +18,8 @@ class PageClass {
 	}
 	
 	public function Run() {
-		$page = $_SERVER['REDIRECT_URL']; // $_SERVER['REDIRECT_URL']; // or 'SCRIPT_URL'
+		print_r($_SERVER);
+		$page = array_key_exists('REDIRECT_URL', $_SERVER) ? $_SERVER['REDIRECT_URL'] : '/index'; // $_SERVER['REDIRECT_URL']; // or 'SCRIPT_URL'
 		//$page = substr( $page, 0, strrpos( $page, "?"));
 
 		if(strrchr($page, "/") == "/") {
